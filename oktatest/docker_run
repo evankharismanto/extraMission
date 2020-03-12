@@ -1,4 +1,0 @@
-docker run --name discovery -it --rm -p 8761:8761  ekharismanto/okta_project_school_ui:discovery
-docker run --name config -it --rm -p 8888:8888 --link discovery -v "$PWD:/config-data:/var/config-data" -e JAVA_OPTS="-DEUREKA_SERVER=http://discovery:8761/eureka -Dspring.cloud.config.server.native.searchLocations=/var/config-data" ekharismanto/okta_project_school_ui:config
-docker run --name school-service -it -p 8081:8081 --link discovery --link config -e JAVA_OPTS="-DEUREKA_SERVER=http://discovery:8761/eureka" --restart=on-failure ekharismanto/okta_project_school_ui:school_service
-docker run --name school-ui -it -p 8080:8080 --link discovery --link config --link school-service -e JAVA_OPTS="-DEUREKA_SERVER=http://discovery:8761/eureka -Dspring.profiles.active=production" --restart=on-failure ekharismanto/okta_project_school_ui:school_ui
