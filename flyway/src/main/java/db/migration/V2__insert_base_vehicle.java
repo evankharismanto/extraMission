@@ -22,7 +22,7 @@ public class V2__insert_base_vehicle extends BaseJavaMigration {
     }
 
     public void migrate(Context context) throws Exception {
-        Resource resource = (new ClassPathXmlApplicationContext()).getResource("classpath:vehicles.csv");
+        Resource resource = (new ClassPathXmlApplicationContext()).getResource("classpath:assets/csv/vehicles.csv");
         List<String[]> records;
         List<String> items;
         try (
