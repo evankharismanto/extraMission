@@ -1,0 +1,1 @@
+update m_vehicle vhc set form='medium_small_car' where vhc.form like 'car';

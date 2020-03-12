@@ -1,18 +1,13 @@
 package db.migration;
 
-import com.opencsv.CSVReader;
-import com.opencsv.CSVReaderBuilder;
-import org.flywaydb.core.api.migration.BaseJavaMigration;
-import org.flywaydb.core.api.migration.Context;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.core.io.Resource;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import org.flywaydb.core.api.migration.*;
 import java.sql.PreparedStatement;
-import java.util.Arrays;
-import java.util.List;
+import com.opencsv.*;
+import java.util.*;
+import java.io.*;
 
 @EnableAutoConfiguration
 public class V2__insert_base_vehicle extends BaseJavaMigration {
