@@ -1,5 +1,6 @@
 package db.migration;
 
+import lombok.SneakyThrows;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.core.io.Resource;
@@ -11,13 +12,21 @@ import java.io.*;
 
 @EnableAutoConfiguration
 public class V2__insert_base_vehicle extends BaseJavaMigration {
+    private String fileLocation = "classpath:assets/csv/vehicles.csv";
+    private String sqlCommand = "insert into m_vehicle(form,brand,model,color,power,powunit) select ?,?,?,?,?,? from dual";
+    @SneakyThrows
     @Override
     public Integer getChecksum() {
-        return super.getChecksum();
+        int result = fileLocation.hashCode();
+        InputStream stream = ((new ClassPathXmlApplicationContext()).getResource(fileLocation)).getInputStream();
+        result = 31 * result + stream.hashCode();
+        result = 31 * result + sqlCommand.hashCode();
+        return result;
+        //return super.getChecksum();
     }
 
     public void migrate(Context context) throws Exception {
-        Resource resource = (new ClassPathXmlApplicationContext()).getResource("classpath:assets/csv/vehicles.csv");
+        Resource resource = (new ClassPathXmlApplicationContext()).getResource(fileLocation);
         List<String[]> records;
         List<String> items;
         try (
@@ -44,7 +53,7 @@ public class V2__insert_base_vehicle extends BaseJavaMigration {
             String power = items.get(4);
             String powunit = items.get(5);
             try (PreparedStatement preparedInsert = context.getConnection()
-                    .prepareStatement("insert into m_vehicle(form,brand,model,color,power,powunit) select ?,?,?,?,?,? from dual")) {
+                    .prepareStatement(sqlCommand)) {
                 preparedInsert.setString(1, form);
                 preparedInsert.setString(2, brand);
                 preparedInsert.setString(3, model);
